@@ -6,17 +6,19 @@
       <div class="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item is-hoverable">
-            <a class="">All recipes</a>
+            <!-- <router-link :to="{name: 'list'}" exact>All recipes</router-link> -->
+            <router-link to="/" exact>All recipes</router-link>
           </div>
           <div class="navbar-item is-hoverable">
-            <a class="">Add a new recipe</a>
+            <!-- <router-link :to="{name: 'add'}" exact>Add a new recipe</router-link> -->
+            <router-link to="/add" exact>Add a new recipe</router-link>
           </div>
-          <div class="navbar-item is-hoverable">
+<!--           <div class="navbar-item is-hoverable">
             <a class="">Shopping list</a>
           </div>
           <div class="navbar-item is-hoverable">
             <a class="">Week menu</a>
-          </div>
+          </div> -->
         </div>
       </div>
     </nav>
@@ -41,4 +43,15 @@ export default {
 .navbar-brand {
   color: #209cee;
 }
+.navbar-item a {
+  padding: 5px;
+  border-radius: 10px;
+}
+/*.router-link-active {
+  background: #209cee;
+  color: #fff;
+}
+.router-link-active:hover {
+  color: #fff;
+}*/
 </style>

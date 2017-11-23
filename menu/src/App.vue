@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <app-header></app-header>
-    <app-recipeslist></app-recipeslist>
+    <router-view></router-view>
+    <!-- <app-recipeslist></app-recipeslist> -->
     <!-- <app-footer></app-footer> -->
   </div>
 </template>

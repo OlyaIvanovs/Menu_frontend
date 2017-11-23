@@ -1,35 +1,36 @@
 <template>
-    <h2>{{ recipe.title }}</h2>
-    <div><b>Ingredients:</b>
+  <div>
+    <h2 class="title is-4">{{ recipe.title }}
+      <p class="tag is-info">{{ recipe.category }}</p>
+    </h2>
+    <div class="columns">
+      <div class="column is-one-quarter">
+        <b>Ingredients:</b>
         <ul>
             <li v-for="ingredient in recipe.ingredients">
                 {{ ingredient.name }} {{ ingredient.amount }} {{ ingredient.unit }}
             </li>
         </ul>
+      </div>
+      <div class="column">
+        <p><b>Method: </b>{{ recipe.method }}</p>
+      </div>
     </div>
-    <div><b>Method:</b>{{ recipe.method }}</div>
-    <div><b>Category:</b>{{ recipe.category }}</div>
+  </div>
 </template>
 
-
-<ul class="people_list">
-            <li class="people_list_item" v-for="person in people" v-on:click="person.show=!person.show">
-                <h2>{{ person.name }}</h2>
-                <h3 v-show="person.show">{{ person.age }}</h3>
-            </li>
-        </ul>
 
 <script>
 
 export default {
   data() {
     return {
-      copyright: "Copyright 2017",
+      id: this.$route.params.id,
       recipe: {}
     }
   },
   created() {
-    this.$http.get('http://127.0.0.1:8000/api/recipe/' + ).then(function(data) {
+    this.$http.get('http://127.0.0.1:8000/api/recipe/' + this.id).then(function(data) {
         this.recipe = data.body;
     })
   }

@@ -4,7 +4,7 @@
         <input type="text" v-model="search" placeholder="Search recipe" class="input">
         <ol class="recipes_list">
             <li class="recipes_list_item" v-for="recipe in filteredRecipes">
-                <span>{{ recipe.title }}</span>
+                <router-link :to="{ name: 'single_recipe', params: { id: recipe.id }}">{{ recipe.title }}</router-link>
                 <span class="tag is-info">{{ recipe.category }}</span>
             </li>
         </ol>
@@ -16,10 +16,6 @@ export default {
   data() {
     return {
       copyright: "Copyright 2017",
-      // recipes: [
-      //   { title: 'Title', method: 'Method', category: 'Category', 
-      //   ingredients: [{name: 'I1', amount: '1', unit: 'unit'}, {name: 'I2', amount: '2', unit: 'unit'}]}
-      // ],
       recipes: [],
       search: ''
     }
