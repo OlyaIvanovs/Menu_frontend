@@ -6,17 +6,23 @@
         <input type="text" placeholder="Title" class="input">
       </div>
       <div class="field">
-        <div class="select">
-          <select>
-            <option>Category</option>
-            <option>With options</option>
-          </select>
-        </div>
-      </div>
-      <div class="field">
         <textarea class="textarea is-info" type="text" placeholder="Info textarea"></textarea>
       </div>
-      <button type="submit" class="button is-info">Add</button>
+      <div class="field">
+        <div class="select">
+          <select v-model="recipe.category">
+            <option value="" disabled selected>Category</option>
+            <option v-for="category in categories">{{ category.name }}</option>
+          </select>
+        </div>
+      </div>  
+      <router-link :to="{name: 'add_category'}" exact>
+        <i class="fa fa-plus-circle" aria-hidden="true"></i> Add a new category
+      </router-link>
+      <br><br>
+      <div class="field">
+        <button type="submit" class="button is-info">Add a recipe</button>
+      </div>
     </form>
   </div>
 </template>
@@ -26,8 +32,18 @@
 export default {
   data() {
     return {
-      copyright: "Copyright 2017",
+      categories: [],
+      recipe: {
+        title: '',
+        method: '',
+        category: ''
+      },
     }
+  },
+  created() {
+    this.$http.get('http://127.0.0.1:8000/api/categorieslist').then(function(data) {
+        this.categories = data.body;
+    })
   }
 }
 </script>
