@@ -3,35 +3,23 @@
     <h2 class="title is-4">Add a new recipe</h2>
     <form>
       <div class="field">
-        <input type="text" placeholder="Title" class="input">
+        <input type="text" placeholder="Title" class="input" v-model="recipe.title">
       </div>
       <div class="field">
-        <textarea class="textarea is-info" rows='10' type="text" placeholder="Method"></textarea>
+        <textarea class="textarea is-info" rows='10' type="text" placeholder="Method" v-model="recipe.method"></textarea>
       </div>
       <div class="field">
-        <div class="select">
-          <select v-model="recipe.category">
-            <option value="" disabled selected>Category</option>
-            <option v-for="category in categories">{{ category.name }}</option>
-          </select>
-        </div>
-      </div>  
-      <router-link :to="{name: 'add_category'}" exact>
-        <i class="fa fa-plus-circle" aria-hidden="true"></i> Add a new category
-      </router-link>
-      <br><br>
-      <div class="field">
-        <input class="input" type="text" list="categoryList" v-on:change="onChange" v-model="selectedCategory">
+        <input placeholder="Category" class="input" type="text" list="categoryList" v-on:change="onChange" v-model="selectedCategory">
         <datalist id="categoryList">
           <option v-for="category in categories">{{ category.name }}</option>
         </datalist>
       </div>  
       <div class="notification is-info" v-if="addedNewCategory">
-        <button class="delete"></button>
+        <button class="delete" v-on:click="closeNotification"></button>
         A new category: <b>{{ selectedCategory }}</b> was added.
       </div>
       <div class="field">
-        <button type="submit" class="button is-info">Add a recipe</button>
+        <button type="submit" class="button is-info" v-on:click.prevent="post">Add a recipe</button>
       </div>
     </form>
   </div>
@@ -54,11 +42,28 @@ export default {
   },
   methods: {
     onChange: function() {
-      console.log(this.selectedCategory);
-      this.$http.post("http://localhost:8000/api/addcategory", {
-        name: this.selectedCategory
-      }).then(function(data){
-        this.addedNewCategory = true;
+      let selected_category = this.selectedCategory.toLowerCase();
+      let existed_category = this.categories.some(category => category.name.toLowerCase() == selected_category);
+
+      if (!existed_category) {
+        this.$http.post("http://localhost:8000/api/addcategory", {
+          name: this.selectedCategory
+        }).then(function(data){
+          this.addedNewCategory = true;
+          this.recipe.category = this.selectedCategory;
+        });
+      }
+    },
+    closeNotification: function() {
+      this.addedNewCategory = false;
+    },
+    post: function() {
+      this.$http.post('http://localhost:8000/api/addrecipe', {
+        title: this.recipe.title,
+        method: this.recipe.method,
+        category: this.recipe.category
+      }).then(function(data) {
+        console.log(data);
       });
     }
   },

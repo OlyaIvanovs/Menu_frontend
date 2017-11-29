@@ -6,12 +6,13 @@
       <div class="navbar-menu">
         <div class="navbar-end">
           <div class="navbar-item is-hoverable">
-            <!-- <router-link :to="{name: 'list'}" exact>All recipes</router-link> -->
-            <router-link to="/" exact>All recipes</router-link>
+            <router-link :to="{name: 'list'}" exact>All recipes</router-link>
           </div>
           <div class="navbar-item is-hoverable">
-            <!-- <router-link :to="{name: 'add'}" exact>Add a new recipe</router-link> -->
-            <router-link to="/add" exact>Add a new recipe</router-link>
+            <router-link :to="{name: 'add'}" exact>Add a new recipe</router-link>
+          </div>
+          <div class="navbar-item is-hoverable">
+            <router-link :to="{name: 'add_category'}" exact>Add a new category</router-link>
           </div>
 <!--           <div class="navbar-item is-hoverable">
             <a class="">Shopping list</a>
