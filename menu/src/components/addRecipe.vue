@@ -42,15 +42,27 @@ export default {
   },
   methods: {
     onChange: function() {
-      let selected_category = this.selectedCategory.toLowerCase();
-      let existed_category = this.categories.some(category => category.name.toLowerCase() == selected_category);
+      var selected_category = this.selectedCategory.toLowerCase();
+      var existed_category = false;
+      var categories_num = this.categories.length;
+      // var existed_category = this.categories.some(category => category.name.toLowerCase() == selected_category);
+
+      for (var i = 0; i < categories_num; i++) {
+        if (this.categories[i].name.toLowerCase() == selected_category) {
+          this.recipe.category = this.categories[i].id;
+          existed_category = true;
+        }
+      }
 
       if (!existed_category) {
         this.$http.post("http://localhost:8000/api/addcategory", {
           name: this.selectedCategory
         }).then(function(data){
           this.addedNewCategory = true;
-          this.recipe.category = this.selectedCategory;
+          this.$http.get('http://127.0.0.1:8000/api/categorieslist').then(function(data) {
+              this.categories = data.body;
+              this.recipe.category = this.categories[categories_num].id;
+          })
         });
       }
     },
@@ -63,7 +75,7 @@ export default {
         method: this.recipe.method,
         category: this.recipe.category
       }).then(function(data) {
-        console.log(data);
+        this.$router.push({ name: 'list'})
       });
     }
   },
