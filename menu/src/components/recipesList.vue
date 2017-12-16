@@ -28,7 +28,7 @@ export default {
     }
   },
   created() {
-    this.$http.get('http://127.0.0.1:8000/api/recipeslist').then(function(data) {
+    this.$http.get('http://127.0.0.1:8000/api/recipes/').then(function(data) {
         this.recipes = data.body;
     })
   }

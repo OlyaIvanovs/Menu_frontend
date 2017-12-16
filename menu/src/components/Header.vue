@@ -14,10 +14,10 @@
           <div class="navbar-item is-hoverable">
             <router-link :to="{name: 'add_category'}" exact>Add a new category</router-link>
           </div>
-<!--           <div class="navbar-item is-hoverable">
-            <a class="">Shopping list</a>
-          </div>
           <div class="navbar-item is-hoverable">
+            <router-link :to="{name: 'shopping_list'}" exact>Shopping list</router-link>
+          </div>
+          <!-- <div class="navbar-item is-hoverable">
             <a class="">Week menu</a>
           </div> -->
         </div>

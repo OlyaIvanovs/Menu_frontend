@@ -36,10 +36,10 @@ export default {
       var existed_category = this.categories.some(category => category.name.toLowerCase() == selected_category);
 
       if (!existed_category) {
-        this.$http.post("http://localhost:8000/api/addcategory", {
+        this.$http.post("http://localhost:8000/api/categories/", {
           name: this.category
         }).then(function(data){
-          this.$http.get('http://127.0.0.1:8000/api/categorieslist').then(function(data) {
+          this.$http.get('http://127.0.0.1:8000/api/categories/').then(function(data) {
               this.categories = data.body;
           })
           this.category = '';
@@ -50,7 +50,7 @@ export default {
     }
   },
   created() {
-    this.$http.get('http://127.0.0.1:8000/api/categorieslist').then(function(data) {
+    this.$http.get('http://127.0.0.1:8000/api/categories/').then(function(data) {
         this.categories = data.body;
     })
   }

@@ -8,12 +8,14 @@
         <b>Ingredients:</b>
         <ul>
             <li v-for="ingredient in recipe.ingredients">
-                {{ ingredient.name }} {{ ingredient.amount }} {{ ingredient.unit }}
+                {{ ingredient.amount }} {{ ingredient.unit }} {{ ingredient.name }} 
             </li>
         </ul>
       </div>
       <div class="column">
         <p><b>Method: </b>{{ recipe.method }}</p>
+        <br>
+        <router-link class="button is-info" :to="{name: 'shopping_list'}" exact>Add to shopping list</router-link>
       </div>
     </div>
   </div>
@@ -30,7 +32,7 @@ export default {
     }
   },
   created() {
-    this.$http.get('http://127.0.0.1:8000/api/recipe/' + this.id).then(function(data) {
+    this.$http.get('http://127.0.0.1:8000/api/recipes/' + this.id).then(function(data) {
         this.recipe = data.body;
     })
   }
