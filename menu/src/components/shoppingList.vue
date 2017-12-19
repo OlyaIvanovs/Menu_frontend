@@ -5,28 +5,30 @@
             <div class="column is-three-fifths">
                 <form>
                     <div class="field">
-                        <input placeholder="Week's name or number" class="input" type="text" list="weeksList" v-model="weekName">
-                        <datalist id="weeksList">
-                            <option v-for="week in weeks">{{ week.name }}</option>
+                        <input v-model="selectedWeek" v-on:change="onChange" placeholder="Week's name or number" class="input" type="text" list="weekList">
+                        <datalist id="weekList">
+                            <option :data-week="week.id" v-for="week in weeks">{{ week.name }}</option>
                         </datalist>
-                    </div> 
-
-                    <div class="notification is-warning" v-if="existedWeek">
-                        <button class="delete"></button>
-                        The week: <b>{{ weekName }}</b> will be added.
                     </div>
                 </form>
-                <br>
-                <h3 class="title is-4">Recipes of this week</h3>
+                <br><br>
+                <h3 class="title is-4">Recipes of  {{ selectedWeek }} week</h3>
                 <ol class="recipes_list">
-                    <li>shopping</li>
-                    <li>shopping</li>
-                    <li>shopping</li>
-                    <li>shopping</li>
+                    <li class="recipes_list_item" v-for="recipe in weekRecipes">
+                        <router-link :to="{ name: 'single_recipe', params: { id: recipe.id }}">{{ recipe.title }}</router-link>
+                        <span class="tag is-info">{{ recipe.category }}</span>
+                    </li>
                 </ol>
             </div>
             <div class="column">
                 <h3 class="title is-4">Things to buy:</h3>
+                <ul class="recipes_list">
+                    <ul>
+                        <li v-for="ingredient in ingredients">
+                            {{ ingredient.amount }} {{ ingredient.unit }} {{ ingredient.name }} 
+                        </li>
+                    </ul>
+                </ul>
             </div>
         </div>
     </div>
@@ -36,14 +38,50 @@
 export default {
   data() {
     return {
-      week_name: ''
+      weekName: '',
+      weekRecipes: [],
+      ingredients: [],
+      weeks: [],
+      selectedWeek: ''
     }
   },
-  computed: {
+  methods: {
+      onChange: function() {
+        var selected_week = this.selectedWeek.toLowerCase();
+        var existed_week = false;
+        var weeks_num = this.weeks.length;
 
+        for (var i = 0; i < weeks_num; i++) {
+            if (this.weeks[i].name.toLowerCase() == selected_week) {
+                var week_id = this.weeks[i].id;
+                existed_week = true;
+                this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + week_id).then(function(data) {
+                    this.weekRecipes = data.body;
+                    this.ingredients = [];
+                    for (let i = 0; i < this.weekRecipes.length; i++) { 
+                        let recipeIngredients = this.weekRecipes[i].ingredients;
+                        for (let k = 0; k < recipeIngredients.length; k++) {
+                            if (this.ingredients.some(ingredient => ingredient.name == recipeIngredients[k].name)) {
+                                for (let n = 0; n < this.ingredients.length; n++) {
+                                    if (this.ingredients[n].unit && (this.ingredients[n].unit == recipeIngredients[k].unit)) {
+                                        this.ingredients[n].amount = this.ingredients[n].amount/1 + recipeIngredients[k].amount/1;
+                                    }
+                                }                 
+                            } else {
+                                recipeIngredients[k].amount = recipeIngredients[k].amount/1;
+                                this.ingredients.push(recipeIngredients[k]); 
+                            }
+                        }        
+                    }
+                })
+            }
+        };
+      }
   },
   created() {
-
+    this.$http.get('http://127.0.0.1:8000/api/weeks/').then(function(data) {
+        this.weeks = data.body;
+    })
   }
 }
 </script>
@@ -51,3 +89,9 @@ export default {
 <style>
 
 </style>
+
+
+
+
+
+
