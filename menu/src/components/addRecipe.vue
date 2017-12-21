@@ -159,6 +159,12 @@ export default {
       }).then(function(data) {
         this.$router.push({ name: 'list'})
       });
+      console.log(JSON.stringify({
+        title: this.recipe.title,
+        method: this.recipe.method,
+        category: this.recipe.category,
+        ingredients: this.ingredients
+      }))
     },
     previewText: function(text) {
       marked.setOptions({

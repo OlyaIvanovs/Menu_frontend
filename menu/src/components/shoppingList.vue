@@ -5,20 +5,40 @@
             <div class="column is-three-fifths">
                 <form>
                     <div class="field">
-                        <input v-model="selectedWeek" v-on:change="onChange" placeholder="Week's name or number" class="input" type="text" list="weekList">
+                        <input v-model="selectedWeek" v-on:input="onChange" placeholder="Week's name or number" class="input" type="text" list="weekList">
                         <datalist id="weekList">
                             <option :data-week="week.id" v-for="week in weeks">{{ week.name }}</option>
                         </datalist>
                     </div>
                 </form>
                 <br><br>
-                <h3 class="title is-4">Recipes of  {{ selectedWeek }} week</h3>
-                <ol class="recipes_list">
-                    <li class="recipes_list_item" v-for="recipe in weekRecipes">
-                        <router-link :to="{ name: 'single_recipe', params: { id: recipe.id }}">{{ recipe.title }}</router-link>
-                        <span class="tag is-info">{{ recipe.category }}</span>
-                    </li>
-                </ol>
+                <template v-if="selectedWeek">
+                    <h3 class="title is-4">Recipes of  {{ selectedWeek }} week</h3>
+                    <ol class="recipes_list">
+                        <li class="recipes_list_item" v-for="recipe in weekRecipes">
+                            <router-link :to="{ name: 'single_recipe', params: { id: recipe.id }}">{{ recipe.title }}</router-link>
+                            <span class="tag is-info">{{ recipe.category }}</span>
+                        </li>
+                    </ol>
+                    <br><br>
+                    <a v-if="addingRecipe" class="button is-info" v-on:click="addRecipe">
+                        Add a recipe for {{ selectedWeek }} week
+                    </a>
+                    <form v-else="addingRecipe">
+                        <div class="select" style="display: inline-block; width: 80%;">
+                            <select v-on:change="selectRecipe">
+                                <option v-for="recipe in recipes" v-bind:data-recipeid="recipe.id">
+                                    {{ recipe.title }}
+                                </option>
+                            </select>
+                        </div>
+                        <button style="display: inline-block;" class="button is-info" title="Add" v-on:click.prevent="post">
+                            <span class="icon is-large">
+                                <i class="fa fa-check-square"></i>
+                            </span>
+                        </button>
+                    </form>
+                </template>
             </div>
             <div class="column">
                 <h3 class="title is-4">Things to buy:</h3>
@@ -42,10 +62,33 @@ export default {
       weekRecipes: [],
       ingredients: [],
       weeks: [],
-      selectedWeek: ''
+      selectedWeek: '',
+      recipes: [],
+      addingRecipe: true,
+      a: '',
+      selectedRecipeId: '',
+      weekId: ''
     }
   },
   methods: {
+      selectRecipe: function() {
+          var obj = event.target;
+          this.selectedRecipeId = obj.options[obj.selectedIndex].getAttribute('data-recipeid');
+      },
+      addRecipe: function() {
+            this.$http.get('http://127.0.0.1:8000/api/recipes/').then(function(data) {
+                this.recipes = data.body;
+                this.addingRecipe = false;
+            })
+      },
+      post: function() {
+        this.$http.put('http://127.0.0.1:8000/api/recipes/' + this.selectedRecipeId  + '/' , 
+        {"week": this.weekId}).then(function() {
+            this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + this.weekId).then(function(data) {
+                this.weekRecipes = data.body;
+            })
+        })
+      },
       onChange: function() {
         var selected_week = this.selectedWeek.toLowerCase();
         var existed_week = false;
@@ -53,9 +96,9 @@ export default {
 
         for (var i = 0; i < weeks_num; i++) {
             if (this.weeks[i].name.toLowerCase() == selected_week) {
-                var week_id = this.weeks[i].id;
+                this.weekId = this.weeks[i].id;
                 existed_week = true;
-                this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + week_id).then(function(data) {
+                this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + this.weekId).then(function(data) {
                     this.weekRecipes = data.body;
                     this.ingredients = [];
                     for (let i = 0; i < this.weekRecipes.length; i++) { 
@@ -87,7 +130,9 @@ export default {
 </script>
 
 <style>
-
+.recipes_list {
+    
+}
 </style>
 
 
