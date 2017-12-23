@@ -1,6 +1,14 @@
 <template>
     <div>
         <h1 class="title is-4">Shopping list</h1>
+        <div v-if="addingRecipeMsg" class="notification is-success">
+            <button v-on:click="addingRecipeMsg=false;" class="delete"></button>
+            <strong>Recipe was added</strong>
+        </div>
+        <div v-if="removingRecipeMsg" class="notification is-danger">
+            <button v-on:click="removingRecipeMsg=false;" class="delete"></button>
+            <strong>Recipe was removed</strong>
+        </div>
         <div class="columns">
             <div class="column is-three-fifths">
                 <form>
@@ -44,6 +52,7 @@
                 </template>
             </div>
             <div class="column">
+                <template v-if="selectedWeek">
                 <h3 class="title is-4">Things to buy:</h3>
                 <ul class="recipes_list">
                     <ul>
@@ -52,6 +61,7 @@
                         </li>
                     </ul>
                 </ul>
+                </template>
             </div>
         </div>
     </div>
@@ -68,6 +78,8 @@ export default {
       selectedWeek: '',
       recipes: [],
       addingRecipe: true,
+      addingRecipeMsg: false,
+      removingRecipeMsg: false,
       a: '',
       selectedRecipeId: '',
       weekId: ''
@@ -88,8 +100,11 @@ export default {
           this.$http.put('http://127.0.0.1:8000/api/recipes/' + selectedRecipeId  + '/removeweek/' , 
         {"week": this.weekId}).then(function() {
             this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + this.weekId).then(function(data) {
+                var vm = this;
                 this.weekRecipes = data.body;
-                this.addingRecipe = true;
+                this.addingRecipe = true;;
+                this.removingRecipeMsg = true;
+                setTimeout(function(){ vm.removingRecipeMsg = false; }, 3000);
             })
         })
       },
@@ -97,8 +112,11 @@ export default {
         this.$http.put('http://127.0.0.1:8000/api/recipes/' + this.selectedRecipeId  + '/' , 
         {"week": this.weekId}).then(function() {
             this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + this.weekId).then(function(data) {
+                var vm = this;
                 this.weekRecipes = data.body;
                 this.addingRecipe = true;
+                this.addingRecipeMsg = true;
+                setTimeout(function(){ vm.addingRecipeMsg = false; }, 3000);
             })
         })
       },
