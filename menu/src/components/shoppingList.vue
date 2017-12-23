@@ -18,11 +18,14 @@
                         <li class="recipes_list_item" v-for="recipe in weekRecipes">
                             <router-link :to="{ name: 'single_recipe', params: { id: recipe.id }}">{{ recipe.title }}</router-link>
                             <span class="tag is-info">{{ recipe.category }}</span>
+                            <a title="Remove" v-on:click="removeRecipe(recipe.id )" class="icon has-text-danger">
+                                <i class="fa fa-ban"></i>
+                            </a>
                         </li>
                     </ol>
                     <br><br>
                     <a v-if="addingRecipe" class="button is-info" v-on:click="addRecipe">
-                        Add a recipe for {{ selectedWeek }} week
+                        Add a recipe
                     </a>
                     <form v-else="addingRecipe">
                         <div class="select" style="display: inline-block; width: 80%;">
@@ -81,11 +84,21 @@ export default {
                 this.addingRecipe = false;
             })
       },
+      removeRecipe: function(selectedRecipeId) {
+          this.$http.put('http://127.0.0.1:8000/api/recipes/' + selectedRecipeId  + '/removeweek/' , 
+        {"week": this.weekId}).then(function() {
+            this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + this.weekId).then(function(data) {
+                this.weekRecipes = data.body;
+                this.addingRecipe = true;
+            })
+        })
+      },
       post: function() {
         this.$http.put('http://127.0.0.1:8000/api/recipes/' + this.selectedRecipeId  + '/' , 
         {"week": this.weekId}).then(function() {
             this.$http.get('http://127.0.0.1:8000/api/recipes/?week=' + this.weekId).then(function(data) {
                 this.weekRecipes = data.body;
+                this.addingRecipe = true;
             })
         })
       },
