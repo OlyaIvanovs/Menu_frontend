@@ -64,7 +64,7 @@ export default {
       recipe: {
         title: '',
         method: '',
-        category: '',
+        category: null,
         category_name: ''
       },
       selectedCategory: '',

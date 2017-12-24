@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       categories: [],
-      category: '',
+      category: null,
       existedCategory: false,
       message: ''
     }
