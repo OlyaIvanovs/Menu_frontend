@@ -180,8 +180,6 @@ export default {
       return marked(text);
     }
   },
-  computed: {
-  },
   created() {
     this.$http.get('http://127.0.0.1:8000/api/categories/').then(function(data) {
         this.categories = data.body;

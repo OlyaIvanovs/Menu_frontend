@@ -1,6 +1,11 @@
 <template>
     <div>
         <h1 class="title is-5">All recipes</h1>
+        <ol class="recipes_list">
+            <li v-for="category in categories">
+                {{ category.name }}
+            </li>
+        </ol>
         <input type="text" v-model="search" placeholder="Search recipe" class="input">
         <ol class="recipes_list">
             <li class="recipes_list_item" v-for="recipe in filteredRecipes">
@@ -25,6 +30,9 @@ export default {
         return this.recipes.filter((recipe) => {
             return recipe.title.match(this.search);
         })
+    },
+    categories: function() {
+        return this.$store.getters.getCategories;
     }
   },
   created() {
