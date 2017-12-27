@@ -1,26 +1,27 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import VueResource from 'vue-resource';
+import * as actions from './actions'
+import * as getters from './getters'
+import mutations from './mutations'
 
-Vue.use(VueResource);
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-      categories: []
+        categories: [
+            { id: 1, name: "!chicken"},
+            { id: 2, name: "!fish"},
+            { id: 3, name: "!chips"},
+            { id: 4, name: "!sweets"},
+        ],
+        ategories: [
+            { id: 1, name: "chicken"},
+            { id: 2, name: "fish"},
+            { id: 3, name: "chips"},
+            { id: 4, name: "sweets"},
+        ]
     },
-    getters: {
-      getCategories: function(state) {
-        return state.categories;
-    }},
-    mutations: {},
-    actions: {
-      getCategoriesDB: function(context) {
-        fetch('http://127.0.0.1:8000/api/categories/')
-          .then((resp) => resp.json())
-          .then(function(data) {
-            console.log(data);
-        })
-      }
-    }
+    getters,
+    actions,
+    mutations
   });
