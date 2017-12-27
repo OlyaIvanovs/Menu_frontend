@@ -2,11 +2,6 @@
     <div>
         <h1 class="title is-5">All recipes</h1>
         <ol class="recipes_list">
-            <li v-for="ategory in ategories">
-                {{ ategory.name }}
-            </li>
-        </ol>
-        <ol class="recipes_list">
             <li v-for="category in categories">
                 {{ category.name }}
             </li>
@@ -28,13 +23,12 @@ export default {
   data() {
     return {
       copyright: "Copyright 2017",
-      recipes: [],
       search: ''
     }
   },
   computed: {
       // map `this.categories` to `store.getters.categories`
-    ...mapGetters(['ategories', 'categories']),
+    ...mapGetters(['categories', 'recipes']),
     filteredRecipes: function() {
         return this.recipes.filter((recipe) => {
             return recipe.title.match(this.search);
@@ -42,10 +36,8 @@ export default {
     }
   },
   created() {
-    this.$http.get('http://127.0.0.1:8000/api/recipes/').then(function(data) {
-        this.recipes = data.body;
-    })
     this.$store.dispatch('getCategories')
+    this.$store.dispatch('getRecipes')
   }
 }
 </script>
