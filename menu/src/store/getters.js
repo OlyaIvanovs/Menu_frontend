@@ -1,15 +1,7 @@
 const getters = {
-    ategories(state) {
-        return state.ategories
-    },
+    categories: state => state.categories,
 
-    categories(state) {
-        return state.categories
-    },
-
-    recipes(state) {
-        return state.recipes
-    }
+    recipes: state => state.recipes
 }
 
 export default getters

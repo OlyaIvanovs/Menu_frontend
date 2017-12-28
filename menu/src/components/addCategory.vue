@@ -14,23 +14,24 @@
         <button class="delete"></button>
         The category: <b>{{ category }}</b> is existed already.
       </div>
-      <button type="submit" class="button is-info" v-on:click.prevent="post">Add</button>
+      <button type="submit" class="button is-info" v-on:click.prevent="addCategory(category)">Add</button>
     </form>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
     return {
       category: null,
-      existedCategory: false,
-      message: ''
+      existedCategory: false
     }
   },
-  methods: {
+  methods: mapActions(['addCategory']),
+  
+/*   {
     post: function() {
       var selected_category = this.category.toLowerCase();
       var existed_category = this.categories.some(category => category.name.toLowerCase() == selected_category);
@@ -48,7 +49,9 @@ export default {
         this.existedCategory = true;
       }
     }
-  },
+  }, */
+
+
   computed: {
      // map `this.categories` to `store.getters.categories`
     ...mapGetters(['categories'])

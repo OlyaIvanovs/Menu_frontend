@@ -19,7 +19,7 @@ import * as types from './mutation-types'
 
 const actions = {
     getCategories({ commit }) {
-        axios.get(urls.URL_RECEIVE_CATEGORIES).then(response => response.data)
+        axios.get(urls.URL_ALL_CATEGORIES).then(response => response.data)
         .then(categories => {
           commit(types.RECEIVE_CATEGORIES, { categories })
         })
@@ -31,6 +31,18 @@ const actions = {
           commit(types.RECEIVE_RECIPES, { recipes })
         })
     },
+
+    addCategory ({ commit, state }, category) {
+        const record = state.categories
+        .find(cat => cat.name.toLowerCase() === category.toLowerCase())
+        if (!record) {
+            axios.post(urls.URL_ALL_CATEGORIES, { name: category }).then(_ => {
+                commit(types.ADD_CATEGORY, category)
+            })
+        } else {
+            commit(types.EXISTED_CATEGORY, true)
+        }
+      },
 }
 
 export default actions
