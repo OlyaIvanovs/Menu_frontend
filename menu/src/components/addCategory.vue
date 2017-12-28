@@ -20,11 +20,11 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
     return {
-      categories: [],
       category: null,
       existedCategory: false,
       message: ''
@@ -49,13 +49,16 @@ export default {
       }
     }
   },
+  computed: {
+     // map `this.categories` to `store.getters.categories`
+    ...mapGetters(['categories'])
+  },
   created() {
-    this.$http.get('http://127.0.0.1:8000/api/categories/').then(function(data) {
-        this.categories = data.body;
-    })
+    this.$store.dispatch('getCategories')
   }
 }
 </script>
+
 
 <style>
 
