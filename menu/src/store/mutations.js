@@ -19,11 +19,16 @@ const mutations = {
             id: getId(state.categories),
             name: category
         })
+        state.addedCategory = true
     },
 
-/*     [types.EXISTED_CATEGORY](state, status) {
+    [types.EXISTED_CATEGORY](state, status) {
         state.existedCategory = status
-    }, */
+    },
+
+    [types.ADDED_CATEGORY](state, status) {
+        state.addedCategory = status
+    },
 }
 
 export default mutations

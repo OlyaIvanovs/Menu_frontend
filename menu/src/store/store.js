@@ -9,7 +9,9 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         categories: [],
-        recipes: []
+        recipes: [],
+        existedCategory: false,
+        addedCategory: false
     },
     getters,
     actions,
