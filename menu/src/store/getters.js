@@ -5,7 +5,9 @@ const getters = {
 
     existedCategory: state => state.existedCategory,
 
-    addedCategory: state => state.addedCategory
+    addedCategory: state => state.addedCategory,
+
+    addedRecipe: state => state.addedRecipe
 }
 
 export default getters

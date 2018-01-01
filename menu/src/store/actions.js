@@ -2,21 +2,6 @@ import axios from 'axios'
 import * as urls from '../api/urls'
 import * as types from './mutation-types'
 
-/* const actions = {
-    getCategories({ commit }) {
-        api.getCategories((categories) => {
-            commit(types.RECEIVE_CATEGORIES,  { categories })
-        })
-    },
-
-    getRecipes({ commit }) {
-        api.getRecipes((recipes) => {
-            commit(types.RECEIVE_RECIPES,  { recipes })
-        })
-    }
-}
- */
-
 const actions = {
     getCategories({ commit }) {
         axios.get(urls.URL_ALL_CATEGORIES).then(response => response.data)
@@ -42,7 +27,13 @@ const actions = {
         } else {
             commit(types.EXISTED_CATEGORY, true)
         }
-      },
+    },
+
+    addRecipe({ commit, state }, recipe) {
+        axios.post(urls.URL_ALL_RECIPES, recipe).then(_ => {
+            commit(types.ADD_RECIPE, recipe)
+        })
+    }
 }
 
 export default actions

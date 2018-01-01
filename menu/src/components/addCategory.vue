@@ -36,17 +36,9 @@ export default {
   },
   methods: {
     addCategory() {
-      let vue = this
-      vue.msg_category = vue.category
-      vue.$store.dispatch('addCategory', vue.category)
-      if (vue.existedCategory || vue.addedCategory) {
-        vue.category = null
-      }
-      
-      setTimeout(()=> {
-        vue.$store.commit(types.ADDED_CATEGORY, false)
-        vue.$store.commit(types.EXISTED_CATEGORY, false)
-      }, 1500);
+      this.msg_category = this.category
+      this.$store.dispatch('addCategory', this.category)
+      this.category = null
     },
     closeMsgAdded() {
       this.$store.commit(types.ADDED_CATEGORY, false)

@@ -20,14 +20,33 @@ const mutations = {
             name: category
         })
         state.addedCategory = true
+        setTimeout(()=> {
+            state.addedCategory = false
+          }, 1500);
     },
 
     [types.EXISTED_CATEGORY](state, status) {
         state.existedCategory = status
+        if (state.existedCategory) {
+            setTimeout(()=> {
+                state.existedCategory = false
+              }, 1500);
+        }
     },
 
     [types.ADDED_CATEGORY](state, status) {
         state.addedCategory = status
+    },
+
+    [types.ADD_RECIPE](state, recipe) {
+        state.recipes.push({
+            id: getId(state.recipes),
+            title: recipe.title,
+            method: recipe.method,
+            category: recipe.category,
+            ingredients: recipe.ingredients
+        })
+        state.addedRecipe = true
     },
 }
 

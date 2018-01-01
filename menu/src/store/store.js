@@ -11,7 +11,8 @@ export const store = new Vuex.Store({
         categories: [],
         recipes: [],
         existedCategory: false,
-        addedCategory: false
+        addedCategory: false,
+        addedRecipe: false
     },
     getters,
     actions,
