@@ -5,7 +5,7 @@
       <div class="notification is-success" v-if="addedRecipe">
           <button class="delete"></button>
           A new 
-          <router-link :to="{ name: 'single_recipe', params: { id: 56 }}">recipe</router-link>
+          <router-link :to="{ name: 'single_recipe', params: { id: recipe_id }}">recipe</router-link>
            was added.
         </div>
       <form>
@@ -83,7 +83,7 @@ export default {
       selectedCategory: '',
       ingredients_text: '',
       ingredients_string: '',
-      recipe_id: 76
+      recipe_id: null
     }
   },
   methods: {
@@ -105,7 +105,7 @@ export default {
 
     addRecipe: function() {
       this.$store.dispatch('addRecipe', this.recipe)
-      this.recipe_id = this.recipe.id
+      this.recipe_id = this.recipes.slice(-1)[0].id
       this.recipe = {}
       this.selectedCategory = ''
       this.ingredients_text = ''

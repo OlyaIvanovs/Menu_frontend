@@ -23,18 +23,25 @@
 
 
 <script>
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
     return {
-      id: this.$route.params.id,
-      recipe: {}
+      id: this.$route.params.id
+    }
+  },
+  computed: {
+    ...mapGetters(['recipes']),
+    recipe() {
+      return this.recipes.find(rec => rec.id == this.id)
     }
   },
   created() {
-    this.$http.get('http://127.0.0.1:8000/api/recipes/' + this.id).then(function(data) {
+/*     this.$http.get('http://127.0.0.1:8000/api/recipes/' + this.id).then(function(data) {
         this.recipe = data.body;
-    })
+    }) */
+    this.$store.dispatch('getRecipes')
   }
 }
 </script>

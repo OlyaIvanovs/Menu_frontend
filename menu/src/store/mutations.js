@@ -47,6 +47,11 @@ const mutations = {
             ingredients: recipe.ingredients
         })
         state.addedRecipe = true
+        if (state.addedRecipe) {
+            setTimeout(()=> {
+                state.addedRecipe = false
+              }, 2500);
+        }
     },
 }
 
